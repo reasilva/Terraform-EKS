@@ -14,10 +14,16 @@ module "eks_cluster" {
 }
 
 module "managed_node_group" {
-  source            = "./managed-node-group"
+  source            = "./modules/managed-node-group"
   project_name      = var.project_name
   cluster_name      = module.eks_cluster.cluster_name
   subnet_private_1a = module.eks_network.output_net_subnet_priv_1a
   subnet_private_1b = module.eks_network.output_net_subnet_priv_1b
   tags              = local.tags
+}
+
+module "eks_aws_load_balancer_controller" {
+  source       = "./modules/aws-load-balancer-controller"
+  project_name = var.project_name
+  tags         = local.tags
 }
